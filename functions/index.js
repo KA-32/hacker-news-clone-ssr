@@ -31,12 +31,16 @@ var getHtml = function getHtml(html) {
   return "<!DOCTYPE html>\n <html lang=\"en\">\n   <head>\n     <meta charset=\"utf-8\" />\n     <link rel=\"icon\" href=\"%PUBLIC_URL%/favicon.ico\" />\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n     <meta name=\"theme-color\" content=\"#000000\" />\n     <meta\n       name=\"description\"\n       content=\"Web site created using create-react-app\"\n     />\n     <link rel=\"apple-touch-icon\" href=\"%PUBLIC_URL%/logo192.png\" />\n     \n     <link rel=\"manifest\" href=\"%PUBLIC_URL%/manifest.json\" />\n     <title>Hacker News</title>\n   </head>\n   <body>\n     <noscript>You need to enable JavaScript to run this app.</noscript>\n     <div id=\"root\">".concat(html, "</div>\n     <script type=\"text/javaScript\" src=\"bundle.js\"></script>\n   </body>\n </html>\n ");
 };
 
+app.get('/', function (req, res) {
+  console.log('root');
+});
 app.get("**", function (req, res) {
   (0, _getNews["default"])(0).then(function (news) {
     var html = (0, _server.renderToString)( /*#__PURE__*/_react["default"].createElement(_App["default"], {
       news: news.hits
     }));
     var finalHtml = getHtml(html);
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=0, no-cache');
     res.send(finalHtml);
   });
 }); //cloud function.

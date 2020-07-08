@@ -34,10 +34,15 @@ const getHtml = function (html) {
  `;
 };
 
+app.get('/',(req,res)=>{
+  console.log('root');
+});
+
 app.get("**", (req, res) => {
   getNews(0).then((news) => {
     const html = renderToString(<App news={news.hits} />);
     const finalHtml = getHtml(html);
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=0, no-cache');
     res.send(finalHtml);
   });
 });
